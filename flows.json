@@ -1,0 +1,266 @@
+[
+    {
+        "id": "7292f0b3969f0ce6",
+        "type": "tab",
+        "label": "Flow 3",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "070d9dd191ec82e6",
+        "type": "file in",
+        "z": "7292f0b3969f0ce6",
+        "name": "",
+        "filename": "C:\\Users\\victo\\OneDrive\\Área de Trabalho\\curso\\gs python\\dados_pacientes.json",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 330,
+        "y": 180,
+        "wires": [
+            [
+                "d44cba8b73dac54b"
+            ]
+        ]
+    },
+    {
+        "id": "d44cba8b73dac54b",
+        "type": "json",
+        "z": "7292f0b3969f0ce6",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 390,
+        "y": 260,
+        "wires": [
+            [
+                "778f997285ff2c46"
+            ]
+        ]
+    },
+    {
+        "id": "e275933c5d94b09e",
+        "type": "debug",
+        "z": "7292f0b3969f0ce6",
+        "name": "debug 3",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 740,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "21a8544e56779187",
+        "type": "inject",
+        "z": "7292f0b3969f0ce6",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "1",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 360,
+        "wires": [
+            [
+                "070d9dd191ec82e6"
+            ]
+        ]
+    },
+    {
+        "id": "778f997285ff2c46",
+        "type": "function",
+        "z": "7292f0b3969f0ce6",
+        "name": "function 10",
+        "func": "var listaNomesVelhos = global.get('listaNomesVelhosGlobal') || [];\nvar listaNomesNovos = [];\n\nfor (var i = 0; i < msg.payload.length; i++) {\n    var newMsg = [{\n            \"variable\": \"Nome\",\n            \"value\": msg.payload[i].Nome,\n        },\n        {\n            \"variable\": \"Idade\",\n            \"value\": msg.payload[i].Idade,\n        },\n        {\n            \"variable\": \"Sintomas\",\n            \"value\": msg.payload[i].Sintomas,\n        }];\n\n    var chave = newMsg[0].value + newMsg[1].value + newMsg[2].value;\n\n    if (listaNomesVelhos.includes(chave)) {\n        // Se já existir, faça algo aqui, se necessário\n    } else {\n        listaNomesNovos.push(newMsg);\n        listaNomesVelhos.push(chave);\n    }\n}\n\nglobal.set('listaNomesVelhosGlobal', listaNomesVelhos);\n\nif (listaNomesNovos.length > 0) {\n    return { payload: listaNomesNovos };\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 420,
+        "wires": [
+            [
+                "6efc4011e9ef36e5",
+                "8c9a6ff6080ed5bd"
+            ]
+        ]
+    },
+    {
+        "id": "6a15a03af633ef52",
+        "type": "mqtt out",
+        "z": "7292f0b3969f0ce6",
+        "name": "Teste",
+        "topic": "tago/data/post",
+        "qos": "1",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "c5fbde6304311bf7",
+        "x": 710,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "6efc4011e9ef36e5",
+        "type": "function",
+        "z": "7292f0b3969f0ce6",
+        "name": "function 11",
+        "func": "// Verifique se msg.payload é um array antes de tentar dividir\nif (Array.isArray(msg.payload)) {\n    for (let i = 0; i < msg.payload.length; i++) {\n        // Envie cada elemento do array como uma mensagem\n        node.send({\n            payload: msg.payload[i],\n        });\n            \n    }\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 570,
+        "y": 500,
+        "wires": [
+            [
+                "e275933c5d94b09e",
+                "6a15a03af633ef52"
+            ]
+        ]
+    },
+    {
+        "id": "3227f6539a6bb703",
+        "type": "mqtt out",
+        "z": "7292f0b3969f0ce6",
+        "name": "",
+        "topic": "1ESR-VMB/LED",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "13515c2548c9b8a1",
+        "x": 720,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "8c9a6ff6080ed5bd",
+        "type": "function",
+        "z": "7292f0b3969f0ce6",
+        "name": "function 12",
+        "func": "// Crie uma variável global para armazenar o estado\nvar estado = 'off';\n\nif (Array.isArray(msg.payload)) {\n    // Se o estado for 'off', envie 'on' e agende 'off' após 2 segundos\n    if (estado === 'off') {\n        node.send({ payload: 'on' });\n\n        // Agende 'off' após 2 segundos\n        setTimeout(function() {\n            node.send({ payload: 'off' });\n            estado = 'off';\n        }, 2000);\n\n        estado = 'on';\n    }\n} else {\n    // Se o payload não for uma matriz, envie 'off' imediatamente\n    node.send({ payload: 'off' });\n    estado = 'off';\n}\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 530,
+        "y": 620,
+        "wires": [
+            [
+                "3227f6539a6bb703",
+                "3cb0e433aab436af"
+            ]
+        ]
+    },
+    {
+        "id": "3cb0e433aab436af",
+        "type": "debug",
+        "z": "7292f0b3969f0ce6",
+        "name": "debug 4",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 720,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "c5fbde6304311bf7",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "mqtt.tago.io",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "13515c2548c9b8a1",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "broker.hivemq.com",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    }
+]
