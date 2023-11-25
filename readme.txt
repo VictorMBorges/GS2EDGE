@@ -19,6 +19,8 @@ Para executar a aplicação, devemos:
 
 INFORMAÇÕES:
 
+Repositório GitHub: https://github.com/VictorMBorges/GS2EDGE
+
 Vídeo demonstrativo: https://youtu.be/d7tC3Vvt6VE
 
 Circuito do Wokwi: https://wokwi.com/projects/382322286816971777
@@ -28,4 +30,9 @@ Dashboard do TAGO.IO: https://650394df1e31b40009fcb981.tago.run/dashboards/info/
 Arquivos .json e .py anexados ao envio, e também disponíveis no repositório do GitHub.
 
 Código do ESP32 disponível no arquivo ESP32.txt
+
+Integrantes:
+
+Pedro Guerra de Souza Freitas - RM: 99526 
+Victor Montenegro Borges - RM: 98708
 
